@@ -19,7 +19,7 @@ const CATEGORIES = [
   {
     label: 'Food',
     icon: '🍕',
-    emojis: ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶','🌽','🥕','🧄','🧅','🥔','🍠','🥐','🥯','🍞','🥖','🥨','🧀','🥚','🍳','🧈','🥞','🧇','🥓','🥩','🍗','🍖','🦴','🌭','🍔','🍟','🍕','🫓','🌮','🌯','🫔','🥙','🧆','🥚','🍲','🥘','🥗','🫕','🍣','🍱','🥟','🦪','🍤','🍙','🍚','🍛','🍜','🍝','🍠','🍢','🧁','🍰','🎂','🍮','🍭','🍬','🍫','🍿','🍩','🍪','🌰','🥜','🫘','🍯','🧃','🥤','🧋','☕','🍵','🧉','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🍾'],
+    emojis: ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶','🌽','🥕','🧄','🧅','🥔','🍠','🥐','🥯','🍞','🥖','🥨','🧀','🥚','🍳','🧈','🥞','🧇','🥓','🥩','🍗','🍖','🦴','🌭','🍔','🍟','🍕','🌮','🌯','🥙','🧆','🍲','🥘','🥗','🍣','🍱','🥟','🦪','🍤','🍙','🍚','🍛','🍜','🍝','🍢','🧁','🍰','🎂','🍮','🍭','🍬','🍫','🍿','🍩','🍪','🌰','🥜','🍯','🧃','🥤','🧋','☕','🍵','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🍾'],
   },
   {
     label: 'Travel',
@@ -39,7 +39,7 @@ const CATEGORIES = [
   {
     label: 'Symbols',
     icon: '❤️',
-    emojis: ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⛎','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','⚕','♻️','⚜️','🔰','✔️','❌','❎','➕','➖','➗','✖️','🟰','♾️','‼️','⁉️','❓','❔','❕','❗','〰️','💱','💲','⚜️','🔱','📛','🔰','⭕','✅','☑️','✔️','❎','🔲','🔳','⬛','⬜','◼️','◻️','◾','◽','▪️','▫️','🟥','🟧','🟨','🟩','🟦','🟪','🟫','⚫','⚪','🔴','🟠','🟡','🟢','🔵','🟣','🟤'],
+    emojis: ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⛎','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','⚕','♻️','⚜️','🔰','✔️','❌','❎','➕','➖','➗','✖️','♾️','‼️','⁉️','❓','❔','❕','❗','〰️','💱','💲','🔱','📛','🔰','⭕','✅','☑️','✔️','❎','🔲','🔳','⬛','⬜','◼️','◻️','◾','◽','▪️','▫️','🟥','🟧','🟨','🟩','🟦','🟪','🟫','⚫','⚪','🔴','🟠','🟡','🟢','🔵','🟣','🟤'],
   },
 ];
 
@@ -56,19 +56,19 @@ export default function EmojiPicker({ onSelect, onClose }) {
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
-  const filtered = search.trim()
-    ? CATEGORIES.flatMap(c => c.emojis).filter(() => true).filter(e => {
-        return true;
-      })
+  const displayEmojis = search.trim()
+    ? CATEGORIES.flatMap(c => c.emojis).filter(e =>
+        e.codePointAt(0).toString(16).includes(search.toLowerCase()) || true
+      ).slice(0, 80)
     : CATEGORIES[activeTab].emojis;
 
-  const displayEmojis = search.trim()
+  const allEmojisForSearch = search.trim()
     ? CATEGORIES.flatMap(c => c.emojis)
     : CATEGORIES[activeTab].emojis;
 
   return (
     <div ref={ref} style={{
-      position:'absolute', bottom:'calc(100% + 8px)', right:0,
+      position:'absolute', bottom:'calc(100% + 8px)', left:0,
       width:340, background:'var(--bg-elevated)', border:'1px solid var(--border)',
       borderRadius:16, boxShadow:'0 8px 40px rgba(0,0,0,0.6)',
       zIndex:1000, overflow:'hidden', userSelect:'none',
@@ -82,6 +82,7 @@ export default function EmojiPicker({ onSelect, onClose }) {
           style={{
             width:'100%', background:'rgba(255,255,255,0.06)', border:'1px solid var(--border)',
             borderRadius:10, padding:'7px 12px', color:'var(--text-primary)', fontSize:13, outline:'none',
+            boxSizing:'border-box',
           }}
         />
       </div>
@@ -109,7 +110,7 @@ export default function EmojiPicker({ onSelect, onClose }) {
 
       <div style={{ padding:'0 10px 10px', maxHeight:220, overflowY:'auto' }}>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(8, 1fr)', gap:2 }}>
-          {displayEmojis.map((emoji, i) => (
+          {allEmojisForSearch.map((emoji, i) => (
             <button key={i} onClick={() => onSelect(emoji)}
               style={{
                 background:'transparent', border:'none', borderRadius:8,
