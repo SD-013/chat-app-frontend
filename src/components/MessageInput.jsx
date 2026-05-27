@@ -55,11 +55,16 @@ export default function MessageInput({ inputRef, value, onChange, onSubmit, onFi
           </button>
 
           <button type="button" onClick={() => setShowEmoji(v => !v)}
-            style={{ width:42, height:42, borderRadius:'var(--radius-sm)', flexShrink:0, background: showEmoji ? 'rgba(91,94,244,0.18)' : 'rgba(255,255,255,0.04)', border: showEmoji ? '1px solid var(--accent)' : '1px solid var(--border)', color: showEmoji ? 'var(--accent)' : 'var(--text-muted)', display:'flex', alignItems:'center', justifyContent:'center', transition:'all 0.15s', cursor:'pointer', fontSize:20, lineHeight:1 }}
+            style={{ width:42, height:42, borderRadius:'var(--radius-sm)', flexShrink:0, background: showEmoji ? 'rgba(91,94,244,0.18)' : 'rgba(255,255,255,0.04)', border: showEmoji ? '1px solid var(--accent)' : '1px solid var(--border)', color: showEmoji ? 'var(--accent)' : 'var(--text-muted)', display:'flex', alignItems:'center', justifyContent:'center', transition:'all 0.15s', cursor:'pointer' }}
             onMouseEnter={e => { if (!showEmoji) { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--accent)'; } }}
             onMouseLeave={e => { if (!showEmoji) { e.currentTarget.style.borderColor='var(--border)'; e.currentTarget.style.color='var(--text-muted)'; } }}
             title="Emoji">
-            😊
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+              <line x1="9" y1="9" x2="9.01" y2="9"/>
+              <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
           </button>
 
           <input ref={inputRef} value={value} onChange={onChange}
