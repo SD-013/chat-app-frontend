@@ -235,16 +235,16 @@ export default function ChatPage({ user, token, apiUrl, onLogout, onUpdateUser }
   const currentMsgs = Array.isArray(conversations[selectedUser?._id]) ? conversations[selectedUser._id] : [];
 
   const buildItems = (msgs) => {
-    const items = []; let lastDate = null, lastSender = null;
+    const items = []; let lastDate = null;
     msgs.forEach((msg, i) => {
       const label = fmtDate(msg.createdAt);
       if (label !== lastDate) {
         items.push({ type:'date', label, key:`d${i}` });
-        lastDate = label; lastSender = null;
+        lastDate = label;
       }
-      const grouped = lastSender === msg.sender;
-      items.push({ type:'msg', msg, key: msg._id || i, grouped });
-      lastSender = msg.sender;
+      const nextMsg = msgs[i + 1];
+      const isLastInGroup = !nextMsg || nextMsg.sender !== msg.sender || fmtDate(nextMsg.createdAt) !== label;
+      items.push({ type:'msg', msg, key: msg._id || i, grouped: !isLastInGroup });
     });
     return items;
   };
